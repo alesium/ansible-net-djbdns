@@ -1,0 +1,51 @@
+---
+
+- name: install required packages
+  pkgin: name="{{ item }}" state="present"
+  ignore_errors: yes
+  with_items: "{{ net_djbdns_tinydns_packages }}"
+  tags:
+          - tinydns
+          - install
+
+- name: prepare tinydns conf
+  shell: "{{ net_djbdns_tinydns_conf_exec }} {{ net_djbdns_tinydns_username }} {{ net_djbdns_tinydns_dnslog_username }} {{ net_djbdns_tinydns_root_dir }} {{ net_djbdns_tinydns_listen_ip_address }}"
+  tags:
+          - tinydns
+          - install
+
+- name: copy tinydns smf
+  template: dest="{{ net_djbdns_tinydns_SmartOS_service_smf_file }}" src="tinydns.xml.j2"
+  when: ansible_distribution == "SmartOS"
+  tags:
+          - tinydns
+          - install
+
+- name: copy tinydns service
+  template: dest="{{ net_djbdns_tinydns_SmartOS_service_exec_file }}" src="tinydns-svc.j2" mode="0755" owner="root"
+  when: ansible_distribution == "SmartOS"
+  tags:
+          - tinydns
+          - install
+
+- name: import tinydns smf
+  shell: "svccfg import {{ net_djbdns_tinydns_SmartOS_service_smf_file }}"
+  notify: enable tinydns
+  when: ansible_distribution == "SmartOS"
+  tags:
+          - tinydns
+          - install
+
+- name: copy data file
+  copy: dest="{{ net_djbdns_tinydns_data_file_dest }}" src="{{ net_djbdns_tinydns_data_file_src }}" mode="0644" owner="tinydns"
+  tags:
+          - tinydns
+          - update
+
+- name: compile data.cdb
+  shell: "make data.cdb"
+  args:
+          chdir: "{{ net_djbdns_tinydns_root_dir }}/root"
+  tags:
+          - tinydns
+          - update

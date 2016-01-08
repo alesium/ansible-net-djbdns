@@ -1,0 +1,4 @@
+---
+
+- name: enable tinydns
+  service: name="{{ net_djbdns_tinydns_service_name }}" state="started" enabled="yes"

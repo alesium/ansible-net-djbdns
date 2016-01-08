@@ -1,0 +1,18 @@
+---
+# defaults file for net-djbdns
+net_djbdns_tinydns_packages:
+         - djbdns
+         - djbdns-run
+         - gmake
+net_djbdns_tinydns_conf_exec: "/opt/local/bin/tinydns-conf"
+net_djbdns_tinydns_username: "tinydns"
+net_djbdns_tinydns_dnslog_username: "dnslog"
+net_djbdns_tinydns_root_dir: "/var/db/tinydns"
+net_djbdns_tinydns_data_file_src: "data"
+net_djbdns_tinydns_data_file_dest: "/var/db/tinydns/root/data"
+net_djbdns_tinydns_listen_ip_address: "127.0.0.1"
+net_djbdns_tinydns_pid_file: "/var/run/tinydns.pid"
+net_djbdns_tinydns_service_name: "pkgsrc/tinydns"
+net_djbdns_tinydns_SmartOS_service_bundle_name: "tinydns"
+net_djbdns_tinydns_SmartOS_service_exec_file: "/opt/local/lib/svc/method/tinydns-svc"
+net_djbdns_tinydns_SmartOS_service_smf_file: "/opt/local/lib/svc/manifest/tinydns.xml"
