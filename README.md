@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sperreault/ansible-net-djbdns.svg?branch=master)](https://travis-ci.org/sperreault/ansible-net-djbdns)
+
 net-djbdns
 =========
 
