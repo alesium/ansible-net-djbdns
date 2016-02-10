@@ -29,6 +29,8 @@ Role Variables
 | `net_djbdns_tinydns_SmartOS_service_bundle_name` | bundle name | `"tinydns"` | 
 | `net_djbdns_tinydns_SmartOS_service_exec_file` | smf exec file | `"/opt/local/lib/svc/method/tinydns-svc"` | 
 | `net_djbdns_tinydns_SmartOS_service_smf_file` | smf method file | `"/opt/local/lib/svc/manifest/tinydns.xml"` | 
+| `net_djbdns_tinydns_pre_include` | pre tasks include | `""` | 
+| `net_djbdns_tinydns_post_include` | post tasks include | `""` |
 
 Dependencies
 ------------

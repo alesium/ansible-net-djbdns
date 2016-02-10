@@ -8,6 +8,13 @@
           - tinydns
           - install
 
+- name: execute pre tinydns configuration tasks
+  include: "{{ net_djbdns_tinydns_pre_include }}"
+  when: net_djbdns_tinydns_pre_include is defined
+  tags:
+         - tinydns
+         - install
+
 - name: prepare tinydns conf
   shell: "{{ net_djbdns_tinydns_conf_exec }} {{ net_djbdns_tinydns_username }} {{ net_djbdns_tinydns_dnslog_username }} {{ net_djbdns_tinydns_root_dir }} {{ net_djbdns_tinydns_listen_ip_address }}"
   tags:
@@ -35,6 +42,13 @@
   tags:
           - tinydns
           - install
+
+- name: execute post tinydns configuration tasks
+  include: "{{ net_djbdns_tinydns_post_include }}"
+  when: net_djbdns_post_tinydns_include is defined
+  tags:
+         - tinydns
+         - install
 
 - name: copy data file
   copy: dest="{{ net_djbdns_tinydns_data_file_dest }}" src="{{ net_djbdns_tinydns_data_file_src }}" mode="0644" owner="tinydns"
