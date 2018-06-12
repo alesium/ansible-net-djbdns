@@ -15,11 +15,17 @@
          - tinydns
          - install
 
+- name: check if tinydns root dir exist
+  stat:
+    path: "{{ net_djbdns_tinydns_root_dir }}"
+  register: stat_net_djbdns_tinydns_root_dir
+
 - name: prepare tinydns conf
   shell: "{{ net_djbdns_tinydns_conf_exec }} {{ net_djbdns_tinydns_username }} {{ net_djbdns_tinydns_dnslog_username }} {{ net_djbdns_tinydns_root_dir }} {{ net_djbdns_tinydns_listen_ip_address }}"
   tags:
           - tinydns
           - install
+  when: stat_net_djbdns_tinydns_root_dir.isdir != true
 
 - name: copy tinydns smf
   template: dest="{{ net_djbdns_tinydns_SmartOS_service_smf_file }}" src="tinydns.xml.j2"
@@ -27,13 +33,7 @@
   tags:
           - tinydns
           - install
-
-- name: copy tinydns service
-  template: dest="{{ net_djbdns_tinydns_SmartOS_service_exec_file }}" src="tinydns-svc.j2" mode="0755" owner="root"
-  when: ansible_distribution == "SmartOS"
-  tags:
-          - tinydns
-          - install
+  register: copy_net_djbdns_tinydns_SmartOS_service_smf_file
 
 - name: import tinydns smf
   shell: "svccfg import {{ net_djbdns_tinydns_SmartOS_service_smf_file }}"
@@ -42,7 +42,8 @@
   tags:
           - tinydns
           - install
-
+  when: net_djbdns_tinydns_SmartOS_service_smf_file.changed
+  
 - name: execute post tinydns configuration tasks
   include: "{{ net_djbdns_tinydns_post_include }}"
   when: net_djbdns_post_tinydns_include is defined
